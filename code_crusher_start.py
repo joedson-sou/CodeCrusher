@@ -39,6 +39,16 @@ LOSE = -1
 #  Insert your implementation of createBoard here
 #
 
+def createBoard(linha, coluna, pecaUnica):
+  listaBidimensional = []
+  for i in range(linha):
+    linha = []
+    for j in range(coluna):
+      linha.append(randrange(pecaUnica))
+    listaBidimensional.append(linha)
+  return listaBidimensional
+    
+
 #
 #  Modify the board by swapping two pieces.
 #
