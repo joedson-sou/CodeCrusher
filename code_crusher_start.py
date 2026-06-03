@@ -44,7 +44,7 @@ def createBoard(linha, coluna, pecaUnica):
   for i in range(linha):
     linha = []
     for j in range(coluna):
-      linha.append(randrange(pecaUnica + 1))
+      linha.append(randrange(pecaUnica))
     listaBidimensional.append(linha)
   return listaBidimensional
 
@@ -77,11 +77,89 @@ def swap(board, r1, c1, r2, c2):
 #  Returns: None -- the game board passed as a parameter is modified
 #
 def clearAll(board, sym):
-  pass
+  rows = len(board)
+  cols = len(board[0])
+  for r in range(rows):
+      for c in range(cols):
+          if board[r][c] == sym:
+              board[r][c] = EMPTY
 
 #
 #  Insert your implementations of vLineAt and hLineAt here
-#
+def vLineAt(board, r, c): 
+    rows = len(board)
+    simbolo = board[r][c]
+  
+    # Se a posição estiver vazia, ignora
+    if simbolo == EMPTY:
+        return False
+        
+    # Caso 1: (r, c) é o TOPO da linha vertical -> checa (r+1, c) e (r+2, c) [cite: 137]
+    if r + 2 < rows:
+        if board[r+1][c] == simbolo and board[r+2][c] == simbolo:
+            return True
+            
+    # Caso 2: (r, c) é o MEIO da linha vertical -> checa (r-1, c) e (r+1, c) [cite: 137]
+    if r - 1 >= 0 and r + 1 < rows:
+        if board[r-1][c] == simbolo and board[r+1][c] == simbolo:
+            return True
+            
+    # Caso 3: (r, c) é a BASE da linha vertical -> checa (r-1, c) e (r-2, c) [cite: 137]
+    if r - 2 >= 0:
+        if board[r-1][c] == simbolo and board[r-2][c] == simbolo:
+            return True
+            
+    return False
+
+
+def hLineAt(board, r, c):
+    """
+    Retorna True se a posição (r, c) faz parte de uma linha horizontal
+    de pelo menos 3 símbolos idênticos[cite: 140].
+    """
+    cols = len(board[0])
+    simbolo = board[r][c]
+    
+    if simbolo == EMPTY:
+        return False
+        
+    # Caso 1: (r, c) é a EXTREMIDADE ESQUERDA -> checa (r, c+1) e (r, c+2) [cite: 141]
+    if c + 2 < cols:
+        if board[r][c+1] == simbolo and board[r][c+2] == simbolo:
+            return True
+            
+    # Caso 2: (r, c) é o MEIO -> checa (r, c-1) e (r, c+1) [cite: 141]
+    if c - 1 >= 0 and c + 1 < cols:
+        if board[r][c-1] == simbolo and board[r][c+1] == simbolo:
+            return True
+            
+    # Caso 3: (r, c) é a EXTREMIDADE DIREITA -> checa (r, c-1) e (r, c-2) [cite: 141]
+    if c - 2 >= 0:
+        if board[r][c-1] == simbolo and board[r][c-2] == simbolo:
+            return True
+            
+    return False
+
+
+def canSwap(board, r1, c1, r2, c2):
+    """
+    Determina se a troca entre (r1, c1) e (r2, c2) resulta em uma combinação válida[cite: 145, 150].
+    O tabuleiro deve retornar ao estado original antes de sair da função[cite: 153].
+    """
+    # 1. Faz a troca temporária [cite: 157]
+    swap(board, r1, c1, r2, c2)
+    
+    # 2. Verifica se gerou combinação em qualquer uma das duas peças envolvidas [cite: 151, 158, 160, 161, 162]
+    match_valido = (
+        hLineAt(board, r1, c1) or vLineAt(board, r1, c1) or
+        hLineAt(board, r2, c2) or vLineAt(board, r2, c2)
+    )
+    
+    # 3. Desfaz a troca obrigatoriamente [cite: 153, 163, 169]
+    swap(board, r1, c1, r2, c2)
+    
+    # 4. Retorna o resultado lógico encontrado [cite: 167, 171]
+    return match_valido
 
 #
 #  Report whether or not two pieces on the board can be swapped.  The function
@@ -830,7 +908,7 @@ def test_clearAll():
         print("\n  The row at index", i, "is a", str(type(result[i])) + ", not a list.")
         return False
       if len(result[i]) != len(ans[i]):
-        print("\n  The row at index", i, "had", len(result[i]), "elements when", cols, "were expected.")
+        print("\n  The row at index", i, "had", len(result[i]), "elements when", len(ans[i]), "were expected.")
         return False
 
     # Did it return the correct value
