@@ -965,7 +965,7 @@ def loadSpriteSheet(fname):
   cc_m.tk.call(cc_m, 'copy', sheet, '-from', 0, 1750, 379, 1750+44, '-to', 0, 0)
 
   cc_b = tk.PhotoImage()
-  cc_b.tk.call(cc_b, 'copy', sheet, '-from', 0, 1794, 379, 1794+44, '-to', 0, 0)
+  cc_b.tk.call(cc_b, 'copy', sheet, '-from', 0, 1780, 379, 1794+30, '-to', 0, 0)
 
   return bg, images, sel_images, win_image, lose_image, cc_m, cc_b
 
@@ -1788,7 +1788,7 @@ def main():
   test_hint()
   test_clearAll()
 
-  bg, images, sel_images, win_image, lose_image, cc_m, cc_b = loadSpriteSheet("sprites.gif")
+  bg, images, sel_images, win_image, lose_image, cc_m, cc_b = loadSpriteSheet("sprites2.gif")
   setAutoUpdate(False)
   while not closed():
     clear()
