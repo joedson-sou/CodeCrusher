@@ -940,7 +940,7 @@ def loadSpriteSheet(fname):
   images = []
   sel_images = []
   y = 600
-  for i in range(7):
+  for i in range(6):
     images.append(tk.PhotoImage())
     images[-1].tk.call(images[-1], 'copy', sheet, '-from', 0, y, 50, y+50, '-to', 0, 0)
     y += 50
@@ -962,7 +962,7 @@ def loadSpriteSheet(fname):
   lose_image.tk.call(lose_image, 'copy', sheet, '-from', 0, y+200, 400, y+400, '-to', 0, 0)
 
   cc_m = tk.PhotoImage()
-  cc_m.tk.call(cc_m, 'copy', sheet, '-from', 0, 1750, 379, 1750+44, '-to', 0, 0)
+  cc_m.tk.call(cc_m, 'copy', sheet, '-from', 0, 1780, 379, 1794+30, '-to', 0, 0)
 
   cc_b = tk.PhotoImage()
   cc_b.tk.call(cc_b, 'copy', sheet, '-from', 0, 1780, 379, 1794+30, '-to', 0, 0)
@@ -1770,7 +1770,7 @@ def drawStatus(score, score_width, target_score, turns_left):
 
 
 def main():
-  if os.path.isfile("sprites.gif") == False:
+  if os.path.isfile("sprites2.gif") == False:
     print("sprites.gif must be located in the same folder / directory as")
     print("your .py file.  Ensure that the name of the file is in all")
     print("lowercase letters.")
