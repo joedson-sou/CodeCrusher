@@ -44,9 +44,13 @@ def createBoard(linha, coluna, pecaUnica):
   for i in range(linha):
     linha = []
     for j in range(coluna):
-      linha.append(randrange(pecaUnica))
+      linha.append(randrange(pecaUnica + 1))
     listaBidimensional.append(linha)
   return listaBidimensional
+
+
+matriz = createBoard(5, 7, 5)
+pprint(matriz)
     
 
 #
