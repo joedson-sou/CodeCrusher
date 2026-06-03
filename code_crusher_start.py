@@ -141,26 +141,6 @@ def hLineAt(board, r, c):
     return False
 
 
-def canSwap(board, r1, c1, r2, c2):
-    """
-    Determina se a troca entre (r1, c1) e (r2, c2) resulta em uma combinação válida[cite: 145, 150].
-    O tabuleiro deve retornar ao estado original antes de sair da função[cite: 153].
-    """
-    # 1. Faz a troca temporária [cite: 157]
-    swap(board, r1, c1, r2, c2)
-    
-    # 2. Verifica se gerou combinação em qualquer uma das duas peças envolvidas [cite: 151, 158, 160, 161, 162]
-    match_valido = (
-        hLineAt(board, r1, c1) or vLineAt(board, r1, c1) or
-        hLineAt(board, r2, c2) or vLineAt(board, r2, c2)
-    )
-    
-    # 3. Desfaz a troca obrigatoriamente [cite: 153, 163, 169]
-    swap(board, r1, c1, r2, c2)
-    
-    # 4. Retorna o resultado lógico encontrado [cite: 167, 171]
-    return match_valido
-
 #
 #  Report whether or not two pieces on the board can be swapped.  The function
 #  should only return true when performing the swap results in a line being
@@ -174,7 +154,24 @@ def canSwap(board, r1, c1, r2, c2):
 #  Returns: True if the proposed swap creates a line.  False otherwise.
 #
 def canSwap(board, r1, c1, r2, c2):
-  return True
+  """
+    Determina se a troca entre (r1, c1) e (r2, c2) resulta em uma combinação válida.
+    O tabuleiro deve retornar ao estado original antes de sair da função.
+    """
+    # 1. Faz a troca temporária
+  swap(board, r1, c1, r2, c2)
+    
+    # 2. Verifica se gerou combinação em qualquer uma das duas peças envolvidas
+  match_valido = (
+      hLineAt(board, r1, c1) or vLineAt(board, r1, c1) or
+      hLineAt(board, r2, c2) or vLineAt(board, r2, c2)
+    )
+    
+    # 3. Desfaz a troca obrigatoriamente
+  swap(board, r1, c1, r2, c2)
+    
+    # 4. Retorna o resultado lógico encontrado
+  return match_valido
 
 #
 #  Identify two adjacent positions on the board that can be swapped to 
