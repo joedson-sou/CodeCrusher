@@ -39,11 +39,11 @@ LOSE = -1
 #  Insert your implementation of createBoard here
 #
 
-def createBoard(linha, coluna, pecaUnica):
+def createBoard(quantLinha, quantColuna, pecaUnica):
   listaBidimensional = []
-  for i in range(linha):
+  for i in range(quantLinha):
     linha = []
-    for j in range(coluna):
+    for j in range(quantColuna):
       linha.append(randrange(pecaUnica))
     listaBidimensional.append(linha)
   return listaBidimensional
@@ -184,26 +184,28 @@ def canSwap(board, r1, c1, r2, c2):
 #           column of the second piece involved in the swap.  If no swap
 #           is possible then -1, -1, -1, -1 is returned.
 #
+
+
 def hint(board):
-  return -1, -1, -1, -1
+    rows = len(board)
+    cols = len(board[0])
 
-##############################################################################
-#
-# Only modify code above this point in the file
-#
-##############################################################################
+    for r in range(rows):
+        for c in range(cols):
 
-##############################################################################
-##
-##  Code for testing the functions written by the students
-##
-##############################################################################
+            # direita
+            if c + 1 < cols:
+                if canSwap(board, r, c, r, c + 1):
+                    return r, c, r, c + 1
 
-# Determine whether or not a function exists in the namespace at the time
-# this function is called
-# Parameters:
-#   name: The name of the function to check the existence of
-# Returns: True if the function exists, False otherwise
+            # baixo
+            if r + 1 < rows:
+                if canSwap(board, r, c, r + 1, c):
+                    return r, c, r + 1, c
+
+    return -1, -1, -1, -1
+
+
 def functionExists(name):
   members = inspect.getmembers(sys.modules[__name__])
   for (n, m) in members:
@@ -933,40 +935,41 @@ def test_clearAll():
 #
 def loadSpriteSheet(fname):
   sheet = loadImage(fname)
-
+ 
   bg = tk.PhotoImage()
   bg.tk.call(bg, 'copy', sheet, '-from', 0, 0, 800, 600, '-to', 0, 0)
-
+ 
   images = []
   sel_images = []
   y = 600
-  for i in range(6):
+  for i in range(7):
     images.append(tk.PhotoImage())
     images[-1].tk.call(images[-1], 'copy', sheet, '-from', 0, y, 50, y+50, '-to', 0, 0)
     y += 50
-
+ 
     sel_images.append(tk.PhotoImage())
     sel_images[-1].tk.call(sel_images[-1], 'copy', sheet, '-from', 0, y, 50, y+50, '-to', 0, 0)
     y += 50
-
+ 
   images.append(tk.PhotoImage())
   images[-1].tk.call(images[-1], 'copy', sheet, '-from', 0, y, 50, y+50, '-to', 0, 0)
   sel_images.append(tk.PhotoImage())
   sel_images[-1].tk.call(sel_images[-1], 'copy', sheet, '-from', 0, y, 50, y+50, '-to', 0, 0)
   y += 50
-
-  win_image = tk.PhotoImage()
-  win_image.tk.call(win_image, 'copy', sheet, '-from', 0, y, 400, y+200, '-to', 0, 0)
-
+ 
+  # win_image carregado do PNG externo com fundo transparente
+  # Coloque o arquivo win_image.png na mesma pasta do .py
+  win_image = loadImage("win_image.png")
+ 
   lose_image = tk.PhotoImage()
   lose_image.tk.call(lose_image, 'copy', sheet, '-from', 0, y+200, 400, y+400, '-to', 0, 0)
-
+ 
   cc_m = tk.PhotoImage()
   cc_m.tk.call(cc_m, 'copy', sheet, '-from', 0, 1780, 379, 1794+30, '-to', 0, 0)
-
+ 
   cc_b = tk.PhotoImage()
   cc_b.tk.call(cc_b, 'copy', sheet, '-from', 0, 1780, 379, 1794+30, '-to', 0, 0)
-
+ 
   return bg, images, sel_images, win_image, lose_image, cc_m, cc_b
 
 def drawItem(item, x, y, images):
