@@ -29,16 +29,9 @@ RUNNING = 0
 WIN = 1
 LOSE = -1
 
-###############################################################################
-#
-#  Only modify the file below this point
-#
-###############################################################################
 
-#
-#  Insert your implementation of createBoard here
-#
 
+# Cria um tabuleiro preenchido com peças aleatórias
 def createBoard(quantLinha, quantColuna, pecaUnica):
   listaBidimensional = []
   for i in range(quantLinha):
@@ -49,33 +42,16 @@ def createBoard(quantLinha, quantColuna, pecaUnica):
   return listaBidimensional
 
 
-#
-#  Modify the board by swapping two pieces.
-#
-#  Parameters:
-#    board: The game board to modify by swapping the pieces
-#    r1, c1: The row and column of the first piece involved in the swap
-#    r2, c2: The row and column of the second piece to swap
-#
-#  Returns: None -- the game board passed as a parameter is modified
-#
 
-#
+# Troca duas posições do tabuleiro
 def swap(board, r1, c1, r2, c2):
   temporario = board[r1][c1]
   board[r1][c1] = board[r2][c2]
   board[r2][c2] = temporario
 
-#
-#  Modify the board to clear all occurences of a given piece, replacing them
-#  with EMPTY.
-#
-#  Parameters:
-#    board: The game board to modify by swapping the pieces
-#    sym: The symbol that should be removed 
-#
-#  Returns: None -- the game board passed as a parameter is modified
-#
+
+
+# Remove todas as ocorrências de uma peça específica
 def clearAll(board, sym):
   rows = len(board)
   cols = len(board[0])
@@ -84,8 +60,10 @@ def clearAll(board, sym):
           if board[r][c] == sym:
               board[r][c] = EMPTY
 
-#
-#  Insert your implementations of vLineAt and hLineAt here
+
+
+# Verifica se existe uma sequência vertical de 3 peças
+# passando pela posição (r, c)
 def vLineAt(board, r, c): 
     rows = len(board)
     simbolo = board[r][c]
@@ -112,6 +90,9 @@ def vLineAt(board, r, c):
     return False
 
 
+
+# Verifica se existe uma sequência horizontal de 3 peças
+# passando pela posição (r, c)
 def hLineAt(board, r, c):
     """
     Retorna True se a posição (r, c) faz parte de uma linha horizontal
@@ -141,18 +122,9 @@ def hLineAt(board, r, c):
     return False
 
 
-#
-#  Report whether or not two pieces on the board can be swapped.  The function
-#  should only return true when performing the swap results in a line being
-#  formed.
-#
-#  Parameters:
-#    board: The game board to be checked
-#    r1, c1: The row and column of the first piece involved in the swap
-#    r2, c2: The row and column of the second piece to swap
-#
-#  Returns: True if the proposed swap creates a line.  False otherwise.
-#
+
+# Simula uma troca e verifica se ela gera
+# uma combinação válida de três peças
 def canSwap(board, r1, c1, r2, c2):
   """
     Determina se a troca entre (r1, c1) e (r2, c2) resulta em uma combinação válida.
@@ -173,19 +145,9 @@ def canSwap(board, r1, c1, r2, c2):
     # 4. Retorna o resultado lógico encontrado
   return match_valido
 
-#
-#  Identify two adjacent positions on the board that can be swapped to 
-#  form a line.
-#
-#  Parameters:
-#    board: The game board to be checked
-#
-#  Returns: The row and column of the first piece, followed by the row and
-#           column of the second piece involved in the swap.  If no swap
-#           is possible then -1, -1, -1, -1 is returned.
-#
 
 
+# Procura uma jogada válida disponível no tabuleiro 
 def hint(board):
     rows = len(board)
     cols = len(board[0])
@@ -193,12 +155,12 @@ def hint(board):
     for r in range(rows):
         for c in range(cols):
 
-            # direita
+            # verifica troca com a peça da direita
             if c + 1 < cols:
                 if canSwap(board, r, c, r, c + 1):
                     return r, c, r, c + 1
 
-            # baixo
+            # verifica troca com a peça abaixo
             if r + 1 < rows:
                 if canSwap(board, r, c, r + 1, c):
                     return r, c, r + 1, c
