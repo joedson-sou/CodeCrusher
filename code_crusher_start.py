@@ -1000,7 +1000,7 @@ def loadSpriteSheet(fname):
   win_image = loadImage("win_image.png")
  
   lose_image = tk.PhotoImage()
-  lose_image.tk.call(lose_image, 'copy', sheet, '-from', 0, y+200, 400, y+400, '-to', 0, 0)
+  lose_image.tk.call(lose_image, 'copy', sheet, '-from',0, y+200, 300, y+350, '-to', 0, 0)
  
   cc_m = tk.PhotoImage()
   cc_m.tk.call(cc_m, 'copy', sheet, '-from', 0, 1780, 379, 1794+30, '-to', 0, 0)
@@ -1860,7 +1860,7 @@ def main():
       break
   
   target_score = 5000
-  max_turns = 35
+  max_turns = 3
   rows = 8
   cols = 8
   syms = 5 
