@@ -148,9 +148,85 @@ def canSwap(board, r1, c1, r2, c2):
 
 
 # Procura uma jogada válida disponível no tabuleiro 
+# ============================================================
+# ÁREA DE MODIFICAÇÃO DO ALUNO
+# ============================================================
+
+# Variável global para controlar o início da animação burst
+_burst_win_start_time = None
+
+def desenhar_burst_congratulations():
+    """
+    Desenha um efeito de explosão (BURST) pulsante centralizado na tela,
+    ativado quando o estado de vitória ('Win') é detectado na pilha de execução.
+    Usa introspecção via 'inspect' para espiar o frame anterior (play()).
+    Envolto em try/except para não quebrar os testes automatizados.
+    """
+    global _burst_win_start_time
+
+    try:
+        # Espia o frame anterior na pilha de execução (play())
+        frame_anterior = inspect.currentframe().f_back.f_back
+        local_vars = frame_anterior.f_locals
+
+        syncAnim = local_vars.get("syncAnim", [])
+
+        # Procura se existe uma entrada "Win" na animação
+        win_et = None
+        for entrada in syncAnim:
+            if entrada[0] == "Win":
+                win_et = entrada[1]  # tempo de ativação
+                break
+
+        if win_et is None:
+            _burst_win_start_time = None
+            return
+
+        ct = time()
+        # Só desenha após o tempo de ativação da vitória
+        if ct < win_et:
+            _burst_win_start_time = None
+            return
+
+        # Registra o início da animação burst na primeira vez
+        if _burst_win_start_time is None:
+            _burst_win_start_time = ct
+
+        cx = getWidth() // 2
+        cy = getHeight() // 2
+
+        elapsed = ct - _burst_win_start_time
+
+        # Efeito elástico: raio cresce de 0 a 450 com oscilação senoidal
+        # Período de ~2 segundos para o pulso
+        raio_max = 450
+        velocidade = 2 * pi / 2.0  # 1 ciclo completo a cada 2 segundos
+        raio_base = raio_max * (0.5 + 0.5 * sin(velocidade * elapsed - pi / 2))
+
+        # Desenha 5 anéis concêntricos com raios decrescentes
+        num_aneis = 5
+        for i in range(num_aneis):
+            fator = 1.0 - (i * 0.18)
+            raio = raio_base * fator
+            if raio < 5:
+                continue
+            alfa = 255 * (1.0 - i / num_aneis) * (0.4 + 0.6 * (raio / raio_max))
+            alfa = max(0, min(255, int(alfa)))
+            setOutline(254, 199, 0)
+            setFill(None)
+            ellipse(cx - raio, cy - raio, raio * 2, raio * 2)
+
+    except Exception:
+        pass  # Ignora silenciosamente em ambiente de testes
+
+
+# Procura uma jogada válida disponível no tabuleiro
 def hint(board):
     rows = len(board)
     cols = len(board[0])
+
+    # Tenta desenhar o efeito burst se o jogo estiver em tela de vitória
+    desenhar_burst_congratulations()
 
     for r in range(rows):
         for c in range(cols):
