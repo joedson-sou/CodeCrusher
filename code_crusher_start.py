@@ -980,7 +980,7 @@ def loadSpriteSheet(fname):
   images = []
   sel_images = []
   y = 600
-  for i in range(7):
+  for i in range(8):
     images.append(tk.PhotoImage())
     images[-1].tk.call(images[-1], 'copy', sheet, '-from', 0, y, 50, y+50, '-to', 0, 0)
     y += 50
@@ -1860,7 +1860,7 @@ def main():
       break
   
   target_score = 5000
-  max_turns = 3
+  max_turns = 35
   rows = 8
   cols = 8
   syms = 5 
